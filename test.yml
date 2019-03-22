@@ -1,0 +1,11 @@
+versions: 1.0
+folder_path: .
+language:
+  - js
+  - css
+  - objectiveC
+hash_code_prefix: "Project Identity keyword: "
+hash_code: lookAtMeNow
+ignore_file_extensions:
+  - .scss
+  - .css
