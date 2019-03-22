@@ -78,16 +78,12 @@ def prepend_hash(folders, options, hash_string)
   list = "git ls-files #{folders}"
   list += " --full-name | grep -Ev '#{options[:ignore_files].join("|")}'" if options[:ignore_files]
   list += " | grep '#{extensions.join("\\|")}'" if options[:language]
-  # list = "find #{folders} -type f"
-  # list += " -name '#{options[:file]}'" if options[:file]
-  # list += " -name '*.#{options[:language]}'" if options[:language]
-  # list += " #{options[:ignore_files].map { |v| "-not -name '*#{v}'" }.join(" ")}" if options[:ignore_files]
   fs = `#{list}`
   fs = fs.split("\n")
   fs = [options[:file]] if options[:file]
   fs.each do |file|
     lang = languages.find { |f| f[:ext] == File.extname(file) }
-    next unless lang
+    next unless lang && File.readlines(file).first.delete!("\n") != lang[:cmt]
     `echo "#{lang[:cmt]}\n$(cat #{file})" > #{file}`
   end
   puts "Done!"
